@@ -1,0 +1,56 @@
+.tile{
+    position: absolute;
+    width: 60px;
+    height: 60px;
+    box-sizing: border-box;
+    display: inline-block;
+    background-color: rgba(0,100,200,0.3);
+    border: 2px black solid;
+}
+#grid-container{
+    position: relative;
+    left: 10%;
+    top: 10%;
+    height: 600px;
+    width: 600px;
+    background-color: blue;
+}
+.minimap{
+    position: absolute;
+    width: 300px;
+    height: 300px;
+    bottom: 0;
+    right: 0;
+}
+.occupied{
+    background-color: green;
+    border: 5px green solid;
+    border-radius: 50%;
+}
+.hostile{
+    background-color: red;
+    border: 5px red solid;
+}
+.active{
+    border: 5px yellow solid;
+}
+.selected{
+    border: 5px black solid;
+}
+
+.minitile{
+    position: absolute;
+    width: 15px;
+    height: 15px;
+    display: inline-block;
+    background-color: rgba(100,100,100,0.5);
+    box-sizing: border-box;
+    border: 1px green solid;
+}
+.discovered{
+    background-color: white;
+}
+
+.miniHostile{
+    background-color: red;
+}
