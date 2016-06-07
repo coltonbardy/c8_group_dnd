@@ -11,13 +11,27 @@ function Tile(x_coord, y_coord, dom_element){
     self.dom_element = dom_element;
     self.occupied = false;
     self.occupant = null;
+    self.in_range = false;
+    self.steps_when_visited = -1;
     self.mini_dom_element = this.dom_element.clone();
+    self.neighbors = [];
 }
 Tile.prototype.make_active = function(){
     $(this.dom_element).addClass('active');
 };
 Tile.prototype.remove_active = function(){
     $(this.dom_element).removeClass('active');
+};
+Tile.prototype.mark_in_range = function(num, actor){
+    this.in_range = true;
+    this.steps_when_visited = num;
+    $(this.dom_element).addClass('valid');
+    actor.tiles_in_range.push(this);
+};
+Tile.prototype.clear_path = function(){
+    this.in_range = false;
+    this.steps_when_visited = -1;
+    $(this.dom_element).removeClass('valid');
 };
 function Area(container){
     //Contains a collection of tiles representing a room, a dungeon, world map, etc.
@@ -37,22 +51,38 @@ function Area(container){
     }
 }
 Area.prototype.select_actor = function(actor){
+    console.log(actor);
     this.selected_actor = actor;
+    console.log("actor: ", this.selected_actor);
     $(this.selected_actor.occupied_tile.dom_element).addClass('selected');
+    actor.start_find_path();
 };
 Area.prototype.deselect_actor = function(){
-    // $(this.selected_actor.occupied_tile.dom_element).removeClass('selected');
+    $(this.selected_actor.occupied_tile.dom_element).removeClass('selected');
+    this.selected_actor.clear_find_path();
     this.selected_actor = null;
 };
 Area.prototype.move_actor = function(actor, new_x, new_y){
-    $(actor.occupied_tile.dom_element).removeClass('selected');
     if(actor.move_to(new_x, new_y)){
         this.deselect_actor();
     }
+    
 };
 Area.prototype.generate_actor = function(x, y, hostile){
     var new_actor = new Actor(this);
-    new_actor.move_to(x,y);
+    new_actor.parent_area = this;
+    new_actor.x_coord=x;
+    new_actor.y_coord=y;
+    new_actor.occupied_tile = this.tile_grid[x][y];
+    console.log('whats going on', this.tile_grid[x][y]);
+    new_actor.occupied_tile.occupant = new_actor;
+    $(new_actor.occupied_tile.dom_element).addClass('occupied');
+    $(new_actor.occupied_tile.mini_dom_element).addClass('occupied');
+    if(new_actor.hostile){
+        $(new_actor.occupied_tile.dom_element).addClass('hostile');
+        $(new_actor.occupied_tile.mini_dom_element).addClass('hostile');
+    }
+    // new_actor.move_to(x,y);
     if(hostile){
         new_actor.make_hostile();
     }
@@ -61,6 +91,22 @@ Area.prototype.generate_actor = function(x, y, hostile){
 Area.prototype.build_tile = function(x, y, tile){
     this.tile_grid[x][y] = new Tile(x, y, tile);
     this.container.append(tile);
+};
+Area.prototype.add_tile_neighbors = function(x, y){
+    var current_tile = this.tile_grid[x][y];
+    if(this.in_bounds(x-1, y)){
+        current_tile.neighbors.push(this.tile_grid[x-1][y]);
+    }
+    if(this.in_bounds(x, y-1)){
+        current_tile.neighbors.push(this.tile_grid[x][y-1]);
+    }
+    if(this.in_bounds(x+1, y)){
+        current_tile.neighbors.push(this.tile_grid[x+1][y]);
+    }
+    if(this.in_bounds(x, y+1)){
+        current_tile.neighbors.push(this.tile_grid[x][y+1]);
+    }
+    else{}
 };
 Area.prototype.build_grid = function(){
     console.log(this.container);
@@ -75,6 +121,11 @@ Area.prototype.build_grid = function(){
         }
     }
     this.tile_grid[this.active_x_coord][this.active_y_coord].make_active();
+    for (var y_coord = 0; y_coord < this.column_height; y_coord++){
+        for (var x_coord = 0; x_coord < this.row_width; x_coord++) {
+            this.add_tile_neighbors(x_coord, y_coord);
+        }
+    }
     console.log(this);
 };
 Area.prototype.give_child_info = function(child_area){
@@ -165,12 +216,15 @@ function Actor(parent_area){ //actor class representing a person or environmenta
     self.parent_area = parent_area;
     self.occupied_tile = null;
     self.hostile = false;
+    self.tiles_in_range = [];
 }
 Actor.prototype.leave_tile = function(){ //
     // input: none
     // output: The actor is no longer an occupant of any tile
     // $(this.occupied_tile).removeClass('occupied');
+    this.clear_find_path();
     this.occupied_tile.occupant = null;
+    $(this.occupied_tile.dom_element).removeClass('selected');
     (this.occupied_tile.dom_element).removeClass('hostile');
     (this.occupied_tile.mini_dom_element).removeClass('hostile');
     this.occupied_tile = null;
@@ -181,6 +235,8 @@ Actor.prototype.leave_tile = function(){ //
 };
 Actor.prototype.make_hostile = function(){
     this.hostile = true;
+    console.log(this);
+    console.log(this.occupied_tile);
     this.occupied_tile.dom_element.addClass("hostile");
     this.occupied_tile.mini_dom_element.addClass("hostile");
 };
@@ -193,15 +249,24 @@ Actor.prototype.move_to = function(new_x, new_y){
             return true;
         }
         console.log("ERR: Tile is occupied");
+        // this.parent_area.selected_actor = null;
+        // $(this.occupied_tile.dom_element).removeClass('selected');
         return false;
     }
+    else if(!this.parent_area.tile_grid[new_x][new_y].in_range){
+        return false;
+    }
+    //here check to see if the tile is a valid option for movement pased on pathfinding.
     console.log('moving to: ', new_x, new_y);
     if(this.occupied_tile != null) {
         this.leave_tile();
     }
+
     this.x_coord=new_x;
     this.y_coord=new_y;
     this.occupied_tile = this.parent_area.tile_grid[new_x][new_y];
+    console.log('wtf');
+    console.log(this);
     this.occupied_tile.occupant = this;
     $(this.occupied_tile.dom_element).addClass('occupied');
     $(this.occupied_tile.mini_dom_element).addClass('occupied');
@@ -240,6 +305,8 @@ $(document).ready(function(){
         main_area.key_pressed(e.which);
         e.preventDefault();
     });
-    main_area.generate_actor(0,0, false);
+    main_area.generate_actor(4,5, false);
     main_area.generate_actor(1,0, true);
+    console.log(main_area.tile_grid);
+    var my_actor = main_area.actor_array[0];
 });
