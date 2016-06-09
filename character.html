@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular.min.js"></script>
+    <title>Character Maker</title>
+</head>
+<body ng-app>
+<h1>Design Your Own Hero</h1>
+Name:<input type="text" placeholder="Name"></input>
+<select ng-model="class">
+    <option value="warrior" selected>Warrior</option>
+    <option value="magician">Magician</option>
+    <option value="knight">Knight</option>
+</select>
+
+<div ng-switch="class">
+    <div ng-switch-when="warrior">
+        <div ng-init="counter=0; hp=50; defense=50; damage=25; max=10">
+            HP:<input ng-model="hp">
+            <button ng-disabled="counter>=10" ng-click="hp=hp+1; max=max-1; counter=counter+1">Add Health</button>
+            <button ng-show="counter" ng-disabled="hp<=50" ng-click="hp=hp-1; max=max+1; counter=counter-1">Remove Health</button>
+            <br>
+            Defense:<input ng-model="defense"></input>
+            <button ng-disabled="counter>=10" ng-click="defense=defense+1; max=max-1; counter=counter+1 ">Add Defense</button>
+            <button ng-show="counter" ng-disabled="defense<=50" ng-click="defense=defense-1; max=max+1; counter=counter-1">Remove Defense</button>
+            <br>
+            Damage:<input ng-model="damage"></input>
+            <button ng-disabled="counter>=10" ng-click="damage=damage+1; max=max-1; counter=counter+1 ">Add Damage</button>
+            <button ng-show="counter" ng-disabled="damage<=25" ng-click="damage=damage-1; max=max+1; counter=counter-1">Remove Damage</button>
+            <p>Remaining Stat Points to Use: {{max}}</p>
+            <button type="button">Create My Hero!</button>
+        </div>
+    </div>
+
+    <div ng-switch="class">
+        <div ng-switch-when="magician">
+            <div ng-init="counter=0; hp=50; defense=40; damage=40; max=10">
+                HP:<input ng-model="hp">
+                <button ng-disabled="counter>=10" ng-click="hp=hp+1; max=max-1; counter=counter+1">Add Health</button>
+                <button ng-show="counter" ng-disabled="hp<=50" ng-click="hp=hp-1; max=max+1; counter=counter-1">Remove Health</button>
+                <br>
+                Defense:<input ng-model="defense"></input>
+                <button ng-disabled="counter>=10" ng-click="defense=defense+1; max=max-1; counter=counter+1 ">Add Defense</button>
+                <button ng-show="counter" ng-disabled="defense<=40" ng-click="defense=defense-1; max=max+1; counter=counter-1">Remove Defense</button>
+                <br>
+                Damage:<input ng-model="damage"></input>
+                <button ng-disabled="counter>=10" ng-click="damage=damage+1; max=max-1; counter=counter+1 ">Add Damage</button>
+                <button ng-show="counter" ng-disabled="damage<=40" ng-click="damage=damage-1; max=max+1; counter=counter-1">Remove Damage</button>
+                <p>Remaining Stat Points to Use: {{max}}</p>
+                <button type="button">Create My Hero!</button>
+            </div>
+        </div>
+
+        <div ng-switch="class">
+            <div ng-switch-when="knight">
+                <div ng-init="counter=0; hp=50; defense=40; damage=35; max=10">
+                    HP:<input ng-model="hp">
+                    <button ng-disabled="counter>=10" ng-click="hp=hp+1; max=max-1; counter=counter+1">Add Health</button>
+                    <button ng-show="counter" ng-disabled="hp<=50" ng-click="hp=hp-1; max=max+1; counter=counter-1">Remove Health</button>
+                    <br>
+                    Defense:<input ng-model="defense"></input>
+                    <button ng-disabled="counter>=10" ng-click="defense=defense+1; max=max-1; counter=counter+1 ">Add Defense</button>
+                    <button ng-show="counter" ng-disabled="defense<=40" ng-click="defense=defense-1; max=max+1; counter=counter-1">Remove Defense</button>
+                    <br>
+                    Damage:<input ng-model="damage"></input>
+                    <button ng-disabled="counter>=10" ng-click="damage=damage+1; max=max-1; counter=counter+1 ">Add Damage</button>
+                    <button ng-show="counter" ng-disabled="damage<=35" ng-click="damage=damage-1; max=max+1; counter=counter-1">Remove Damage</button>
+                    <p>Remaining Stat Points to Use: {{max}}</p>
+                    <button type="button" ng-click="characterBorn();">Create My Hero!</button>
+                </div>
+            </div>
+
+
+        </div> <!--close switch-->
+</body>
+</html>

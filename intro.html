@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Intro Page</title>
+    <style type="text/css">
+        #titles
+        {
+            position: absolute;
+            width: 18em;
+            height: 50em;
+            bottom: 0;
+            left: 50%;
+            margin-left: -9em;
+            font-size: 350%;
+            font-weight: bold;
+            text-align: justify;
+            overflow: hidden;
+            transform-origin: 50% 100%;
+            transform: perspective(300px) rotateX(25deg);
+        }
+        #titles:after
+        {
+            position: absolute;
+            content: ' ';
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 60%;
+            background-image: linear-gradient(top, rgba(0,0,0,1) 0%, transparent 100%);
+            pointer-events: none;
+        }
+        #titlecontent
+        {
+            position: absolute;
+            top: 100%;
+            animation: scroll 80s linear 4s infinite;
+        }
+        @keyframes scroll {
+            0% { top: 100%; }
+            100% { top: -170%; }
+        }
+        body {
+            background: navy;
+            color: gold;
+        }
+        button {
+            border-radius:4px;
+            border: 2px solid black;
+            cursor:pointer;
+            background-color: goldenrod;
+            font-family: Arial;
+            font-size: 20px;
+            text-decoration: none;
+            text-shadow: 0px 1px 0px #9e0b00;
+        }
+        button:hover {
+            background-color: darkgray;
+            color: black;
+        }
+        a:visited {
+            color: black;
+        }
+        h1 {
+            color: goldenrod;
+            font-size: 55px;
+            text-align: center;
+        }
+        .center {
+            text-align: center;
+        }
+
+    </style>
+</head>
+<body>
+
+<h1>Name of the Game</h1>
+<div id="titles"><div id="titlecontent">
+
+    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque condimentum metus dolor, at malesuada mi luctus id. Mauris facilisis orci at malesuada vehicula. Integer auctor euismod orci, et gravida purus dictum ut. Nunc tellus eros, ultricies sit amet mauris vel, tincidunt fringilla est. Nam et velit interdum, efficitur tellus eu, consectetur urna. Aenean vulputate est metus, et laoreet sem rhoncus sed. Integer auctor et turpis quis semper. Donec nec sapien at mauris laoreet suscipit eget ac lorem. Vestibulum mollis scelerisque nulla, vitae efficitur neque sagittis non. Donec dignissim erat et iaculis rhoncus. Interdum et malesuada fames ac ante ipsum primis in faucibus. Sed vitae nulla cursus, maximus arcu non, tempus arcu. Nullam lectus erat, maximus in arcu ut, pulvinar sollicitudin ante. Donec nec enim non lectus lobortis fermentum consectetur porttitor nibh. Mauris feugiat nisl nunc, vitae eleifend diam aliquam ac.
+
+        Nullam vulputate tempor mi sit amet suscipit. Cras lacinia dapibus facilisis. Mauris vel posuere turpis. Fusce id rutrum odio. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Quisque a nisl facilisis, egestas diam vitae, tincidunt tellus. Integer fermentum elit at auctor blandit. In placerat blandit vehicula. Sed eu interdum diam. Curabitur eleifend augue ut lacus suscipit convallis. Donec non congue diam. Mauris aliquet ac ligula ac iaculis.
+
+        Vestibulum vitae scelerisque mauris. Quisque vel aliquet diam. Sed leo arcu, dignissim ut nisl ac, semper tempor libero. Donec hendrerit feugiat diam. Pellentesque scelerisque justo sed pretium laoreet. Etiam non posuere libero. Mauris condimentum tempus luctus. Ut in tincidunt dolor. Suspendisse nec dui eget eros pellentesque luctus sed a erat.
+
+        In mollis lacus vitae molestie eleifend. Fusce sit amet ante id eros fringilla hendrerit. In pulvinar nunc et laoreet accumsan. Suspendisse est ipsum, malesuada ut justo at, vulputate iaculis nibh. Mauris accumsan rutrum turpis rhoncus fermentum. Fusce porttitor nulla nunc, sed pretium quam suscipit quis. Etiam ac pretium ligula.
+
+        Sed ut lacinia libero. Donec ante quam, tempus et purus id, lobortis dapibus diam. Sed eget sem ac metus blandit fermentum. Donec ullamcorper laoreet nisl, sit amet mollis lectus laoreet vel. In sodales risus eu tristique gravida. Integer dapibus mauris vitae metus volutpat ornare. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Mauris elementum aliquam elit, ac auctor augue faucibus a. Ut eu condimentum lacus. Nunc id orci sit amet enim sodales venenatis nec quis quam. Sed sed euismod tellus. Suspendisse fringilla est elit, et suscipit ipsum pellentesque et.
+    </p>
+</div></div>
+
+<div class="center"><button><a href="#">Start Game!</a></button></div>
+
+</body>
+</html>
